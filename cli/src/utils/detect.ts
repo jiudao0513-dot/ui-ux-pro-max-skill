@@ -7,6 +7,12 @@ interface DetectionResult {
   suggested: AIType | null;
 }
 
+// A plain .github directory usually contains workflows, not Copilot configuration.
+const COPILOT_MARKERS = [
+  '.github/copilot-instructions.md', '.github/instructions', '.github/prompts',
+  '.github/agents', '.github/skills', '.github/hooks', '.copilot/skills',
+];
+
 export function detectAIType(cwd: string = process.cwd()): DetectionResult {
   const detected: ConcreteAIType[] = [];
 
@@ -26,7 +32,7 @@ export function detectAIType(cwd: string = process.cwd()): DetectionResult {
   } else if (existsSync(join(cwd, '.agent'))) {
     detected.push('antigravity');
   }
-  if (existsSync(join(cwd, '.github'))) {
+  if (COPILOT_MARKERS.some(marker => existsSync(join(cwd, marker)))) {
     detected.push('copilot');
   }
   if (existsSync(join(cwd, '.kiro'))) {
@@ -101,7 +107,7 @@ export function getAITypeDescription(aiType: AIType): string {
     case 'antigravity':
       return 'Antigravity (.agents/skills/)';
     case 'copilot':
-      return 'GitHub Copilot (.github/prompts/)';
+      return 'GitHub Copilot (.github/skills/)';
     case 'kiro':
       return 'Kiro (.kiro/steering/)';
     case 'codex':

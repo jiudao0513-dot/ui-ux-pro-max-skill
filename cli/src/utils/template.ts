@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs';
 import { readFile, mkdir, writeFile, cp, access, readdir, lstat, rm } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { homedir } from 'node:os';
+import { collectCopilotFiles, installCopilotSkill, removeLegacyCopilotInstall } from './copilot.js';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -19,6 +20,7 @@ export interface PlatformConfig {
   installType: 'full' | 'reference';
   folderStructure: {
     root: string;
+    globalRoot?: string;
     skillPath: string;
     filename: string;
     dataPath?: string;
@@ -78,6 +80,11 @@ export async function loadPlatformConfig(aiType: string): Promise<PlatformConfig
   const configPath = join(ASSETS_DIR, 'templates', 'platforms', `${platformName}.json`);
   const content = await readFile(configPath, 'utf-8');
   return JSON.parse(content) as PlatformConfig;
+}
+
+/** Resolve the project or personal configuration root without changing other platforms. */
+export function platformRoot(config: PlatformConfig, isGlobal: boolean): string {
+  return (isGlobal && config.folderStructure.globalRoot) || config.folderStructure.root;
 }
 
 /**
@@ -162,14 +169,20 @@ export async function renderSkillFile(config: PlatformConfig, isGlobal = false):
     );
   }
 
-  // For global install, rewrite relative script paths to absolute ~/root/ paths
-  if (isGlobal) {
-    const globalPrefix = `~/${config.folderStructure.root}/`;
+  // Copilot commands run from the project root; personal skills use ~/.copilot.
+  // Preserve the established rendering of every other platform.
+  if (isGlobal || config.platform === 'copilot') {
+    const globalPrefix = `${isGlobal ? '~/' : ''}${platformRoot(config, isGlobal)}/`;
     // Match any platform's script path pattern (skills/, prompts/, steering/, etc.)
     content = content.replace(
       new RegExp(`python3 ${config.scriptPath.replace(/\//g, '\\/')}`, 'g'),
       `python3 ${globalPrefix}${config.scriptPath}`
     );
+  }
+
+  if (config.platform === 'copilot') {
+    const scriptPath = `${isGlobal ? '~/' : ''}${platformRoot(config, isGlobal)}/${config.scriptPath}`;
+    content = content.replace(/(python3? )scripts\/search\.py/g, `$1${scriptPath}`);
   }
 
   return frontmatter + content;
@@ -261,6 +274,23 @@ export async function generatePlatformFiles(
   // For global install, target the user's home directory
   const effectiveDir = isGlobal ? homedir() : targetDir;
 
+  const root = platformRoot(config, isGlobal);
+  if (aiType === 'copilot') {
+    const files = new Map<string, Buffer>([
+      ['SKILL.md', Buffer.from(await renderSkillFile(config, isGlobal))],
+      ...await collectCopilotFiles(join(ASSETS_DIR, 'data'), 'data/'),
+      ...await collectCopilotFiles(join(ASSETS_DIR, 'scripts'), 'scripts/'),
+    ]);
+    if (!(await installCopilotSkill(effectiveDir, `${root}/${config.folderStructure.skillPath}`, files, force))) return [];
+    for (const name of await listBundledSubSkills()) {
+      await installCopilotSkill(effectiveDir, `${root}/skills/${name}`,
+        await collectCopilotFiles(join(ASSETS_DIR, 'skills', name)), force);
+    }
+    const removed = await removeLegacyCopilotInstall(effectiveDir);
+    if (removed.length) console.log(`  Removed ${removed.length} unchanged legacy Copilot files`);
+    return [root];
+  }
+
   // Determine full skill directory path
   const skillDir = join(
     effectiveDir,
@@ -293,9 +323,9 @@ export async function generatePlatformFiles(
 
   // Install the sibling sub-skills (banner-design, brand, design, ...) next to
   // the orchestrator so all 7 skills are delivered. The skills parent is the
-  // orchestrator's parent dir (skills/ for most platforms, prompts/ for
-  // copilot, steering/ for kiro) — derived, not hardcoded. For platforms with
-  // a separate dataPath (copilot), the orchestrator's data dir is the anchor.
+  // orchestrator's parent dir (skills/ for most platforms, steering/ for
+  // kiro) — derived, not hardcoded. For platforms with a separate dataPath,
+  // the orchestrator's data dir is the anchor.
   const skillsParentDir = join(
     effectiveDir,
     config.folderStructure.root,
@@ -319,7 +349,7 @@ export async function generateAllPlatformFiles(targetDir: string, isGlobal = fal
     try {
       const config = await loadPlatformConfig(aiType);
       const skillFile = join(
-        config.folderStructure.root,
+        platformRoot(config, isGlobal),
         config.folderStructure.skillPath,
         config.folderStructure.filename
       );

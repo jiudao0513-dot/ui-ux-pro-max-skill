@@ -19,7 +19,8 @@
     "smoke:domains": "cd .. && bash scripts/smoke-domains.sh",
     "smoke:stacks": "cd .. && bash scripts/smoke-stacks.sh",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run sync:assets && npm run validate:csv && npm run smoke:domains && npm run smoke:stacks && npm run typecheck && npm run build"
+    "prepublishOnly": "npm run sync:assets && npm run validate:csv && npm run smoke:domains && npm run smoke:stacks && npm run typecheck && npm run build",
+    "test:installer": "npm run build && playwright test copilot-skills.spec.ts --reporter=line"
   },
   "keywords": [
     "ui",

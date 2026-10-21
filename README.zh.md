@@ -326,6 +326,7 @@ npm 包名为 `ui-ux-pro-max-cli`；它仍然安装 `uipro` 命令。旧版 `uip
 ```bash
 uipro init --ai claude --global   # 安装到 ~/.claude/skills/
 uipro init --ai cursor --global   # 安装到 ~/.cursor/skills/
+uipro init --ai copilot --global  # 安装到 ~/.copilot/skills/
 uipro init --ai universal --global # 安装到 ~/.agents/skills/
 ```
 
@@ -356,7 +357,7 @@ python3 --version
 
 ### 技能模式 (自动激活)
 
-**支持：** Claude Code、Cursor、Windsurf、Antigravity、Codex CLI、Continue、Gemini CLI、OpenCode、Qoder、CodeBuddy、Droid (Factory)、KiloCode、Warp、Augment、CodeWhale
+**支持：** Claude Code、Cursor、Windsurf、Antigravity、Codex CLI、Continue、Gemini CLI、OpenCode、Qoder、CodeBuddy、Droid (Factory)、KiloCode、Warp、Augment、CodeWhale、GitHub Copilot
 
 当你请求 UI/UX 工作时，技能会自动激活。只需自然地聊天：
 
@@ -368,7 +369,7 @@ python3 --version
 
 ### 工作流模式 (斜杠命令)
 
-**支持：** Kiro、GitHub Copilot、Roo Code、KiloCode
+**支持：** Kiro、Roo Code、KiloCode
 
 使用斜杠命令调用技能：
 

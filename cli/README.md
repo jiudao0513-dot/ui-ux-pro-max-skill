@@ -38,6 +38,33 @@ uipro update                # Update the global CLI to the latest release
 uipro update --global       # Refresh globally installed skill files from this CLI package
 ```
 
+## GitHub Copilot Agent Skills
+
+```bash
+uipro init --ai copilot             # .github/skills/ui-ux-pro-max/SKILL.md
+uipro init --ai copilot --global    # ~/.copilot/skills/ui-ux-pro-max/SKILL.md
+uipro update --ai copilot           # Refresh project skills when the CLI is current
+uipro update --ai copilot --global  # Refresh personal skills when the CLI is current
+uipro uninstall --ai copilot        # Remove project installation (asks for confirmation)
+uipro uninstall --ai copilot --global
+```
+
+Copilot discovers `SKILL.md` with `name` and `description` frontmatter. Data and
+scripts are installed inside the main skill; the six bundled sub-skills are
+siblings. A normal `.github/` directory containing only workflows does not
+select Copilot.
+
+Init and update migrate the old `.github/prompts/` layout after installing the
+new skills. Uninstall handles both layouts. Cleanup removes only recognized,
+unchanged tool files: fingerprints of this fork's CLI 2.5.0 layout are retained
+for migration, with recognized main-skill evidence required before cleaning
+sibling skills. New installations record file ownership in `.uipro-files.json`
+inside each skill. Unknown legacy versions, edited files, extra files, custom
+same-name skills and symlinks are preserved. Copilot refreshes (including
+`--force`) preserve edited or unowned files; inspect any preservation notices
+before removing leftovers manually. Other platforms retain their existing
+installation and overwrite behavior.
+
 ## GitHub Authentication
 
 GitHub's unauthenticated API allows 60 requests/hour per IP. If you hit rate limits, you can provide a GitHub Personal Access Token (PAT) to raise the limit to 5,000 requests/hour.
@@ -91,6 +118,9 @@ npm run sync:assets
 
 # Verify bundled assets are current before publishing
 npm run check:assets
+
+# Build and run installer regression tests (no browser required)
+npm run test:installer
 
 # Link for local testing
 bun link

@@ -7,8 +7,9 @@ import prompts from 'prompts';
 import type { AIType, ConcreteAIType } from '../types/index.js';
 import { AI_TYPES, AI_FOLDERS } from '../types/index.js';
 import { detectAIType, getAITypeDescription } from '../utils/detect.js';
-import { listBundledSubSkills, loadPlatformConfig } from '../utils/template.js';
+import { listBundledSubSkills, loadPlatformConfig, platformRoot } from '../utils/template.js';
 import { logger } from '../utils/logger.js';
+import { removeCopilotInstall } from '../utils/copilot.js';
 
 interface UninstallOptions {
   ai?: AIType;
@@ -18,21 +19,24 @@ interface UninstallOptions {
 /**
  * Remove skill directory for a given AI type
  */
-async function removeSkillDir(baseDir: string, aiType: ConcreteAIType): Promise<string[]> {
+export async function removeSkillDir(baseDir: string, aiType: ConcreteAIType, isGlobal = false): Promise<string[]> {
   const removed: string[] = [];
 
   // The orchestrator plus the bundled sibling sub-skills installed by init.
   const skillNames = ['ui-ux-pro-max', ...(await listBundledSubSkills())];
+  if (aiType === 'copilot') {
+    const config = await loadPlatformConfig(aiType);
+    return removeCopilotInstall(baseDir, platformRoot(config, isGlobal), skillNames);
+  }
 
   // Parent directories to clean. Derive the real install location from the
   // platform config's skillPath (same source the installer uses), so
-  // non-`skills/` platforms are handled — copilot installs under
-  // `.github/prompts/`, kiro under `.kiro/steering/`. Also clean the legacy
+  // non-`skills/` platforms are handled (kiro uses `.kiro/steering/`).
+  // Also clean the legacy
   // `<folder>/skills/` layout (incl. `.shared/`) so older installs are removed.
   const parents = new Set<string>();
   // Standalone skill files to remove (platforms with a dataPath keep the
-  // rendered skill file apart from the data directory — e.g. copilot's
-  // `.github/prompts/ui-ux-pro-max.prompt.md`).
+  // rendered skill file apart from the data directory).
   const skillFiles = new Set<string>();
   try {
     const { folderStructure } = await loadPlatformConfig(aiType);
@@ -143,11 +147,11 @@ export async function uninstallCommand(options: UninstallOptions): Promise<void>
     if (aiType === 'all') {
       // Remove for all detected platforms
       for (const type of initialDetected) {
-        const removed = await removeSkillDir(baseDir, type);
+        const removed = await removeSkillDir(baseDir, type, isGlobal);
         allRemoved.push(...removed);
       }
     } else {
-      const removed = await removeSkillDir(baseDir, aiType);
+      const removed = await removeSkillDir(baseDir, aiType, isGlobal);
       allRemoved.push(...removed);
     }
 
