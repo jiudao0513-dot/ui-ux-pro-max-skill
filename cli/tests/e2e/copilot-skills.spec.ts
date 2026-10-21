@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
-import { cp, mkdir, readFile, readdir, rm, symlink, writeFile } from 'node:fs/promises';
+import { cp, mkdir, mkdtemp, readFile, readdir, rm, symlink, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { detectAIType } from '../../src/utils/detect.js';
@@ -15,10 +15,11 @@ const fixtures = join(cli, 'tests/fixtures');
 const sha = (content: string | Buffer) => createHash('sha256').update(content).digest('hex');
 
 async function setup(testInfo: { outputPath: (path: string) => string }) {
-  const project = testInfo.outputPath('project');
-  const home = testInfo.outputPath('home');
-  await mkdir(project, { recursive: true });
-  await mkdir(home, { recursive: true });
+  // Use fresh fixtures even when a runner retains hidden files from earlier runs.
+  const root = testInfo.outputPath('fixtures');
+  await mkdir(root, { recursive: true });
+  const project = await mkdtemp(join(root, 'project-'));
+  const home = await mkdtemp(join(root, 'home-'));
   return { project, home };
 }
 
@@ -164,6 +165,8 @@ for (const relative of ['.github/prompts', '.github/prompts/design', '.github/pr
     test.skip(process.platform === 'win32', 'Creating symlinks requires Windows developer mode');
     const {project, home} = await setup(info);
     await legacy(home);
+    await legacy(project);
+    await rm(join(project, relative), { recursive: true });
     const external = join(home, relative);
     await mkdir(dirname(join(project, relative)), { recursive: true });
     await symlink(external, join(project, relative), 'dir');
@@ -253,4 +256,14 @@ test('--global uninstall --ai all detects personal Copilot without touching the 
   await run(['uninstall', '--ai', 'all', '--global'], project, home);
   expect(await readdir(join(home, '.copilot/skills'))).toEqual([]);
   expect(existsSync(join(project, '.github/skills/ui-ux-pro-max/SKILL.md'))).toBe(true);
+});
+
+test('standalone bundled sub-skills are preserved without evidence of a legacy orchestrator', async ({}, info) => {
+  const {project, home} = await setup(info);
+  const skill = join(project, '.github/prompts/design');
+  await cp(join(assets, 'skills/design'), skill, { recursive: true });
+  const before = await readFile(join(skill, 'SKILL.md'));
+  await run(['init', '--ai', 'copilot'], project, home);
+  await run(['uninstall', '--ai', 'copilot'], project, home);
+  expect(await readFile(join(skill, 'SKILL.md'))).toEqual(before);
 });

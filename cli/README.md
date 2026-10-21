@@ -57,7 +57,8 @@ select Copilot.
 Init and update migrate the old `.github/prompts/` layout after installing the
 new skills. Uninstall handles both layouts. Cleanup removes only recognized,
 unchanged tool files: fingerprints of this fork's CLI 2.5.0 layout are retained
-for migration, and new installations record file ownership in `.uipro-files.json`
+for migration, with recognized main-skill evidence required before cleaning
+sibling skills. New installations record file ownership in `.uipro-files.json`
 inside each skill. Unknown legacy versions, edited files, extra files, custom
 same-name skills and symlinks are preserved. Copilot refreshes (including
 `--force`) preserve edited or unowned files; inspect any preservation notices

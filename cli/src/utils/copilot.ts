@@ -138,7 +138,16 @@ async function removeMatchingFiles(base: string, directory: string, files: Finge
 export async function removeLegacyCopilotInstall(base: string): Promise<string[]> {
   // Frozen fingerprints cover both project and personal installs of the old CLI.
   // Unknown versions or user edits are deliberately retained, never guessed.
-  const removed = await removeMatchingFiles(base, '.github/prompts', legacyCopilotFiles);
+  // A separately installed copy of a bundled sub-skill is not evidence that
+  // uipro installed this layout. Require a recognized orchestrator first.
+  const markers = ['ui-ux-pro-max.prompt.md', 'ui-ux-pro-max/scripts/search.py'];
+  const recognized = await Promise.all(markers.map(async path => {
+    const current = await fileDigest(base, `.github/prompts/${path}`);
+    return current !== undefined && legacyCopilotFiles[path]?.includes(current);
+  }));
+  const removed = recognized.some(Boolean)
+    ? await removeMatchingFiles(base, '.github/prompts', legacyCopilotFiles)
+    : [];
   if (await stat(join(base, '.github/prompts/ui-ux-pro-max.prompt.md')) ||
       await stat(join(base, '.github/prompts/ui-ux-pro-max'))) {
     console.log(`  Preserved unrecognized or modified legacy files in ${join(base, '.github/prompts')}`);
