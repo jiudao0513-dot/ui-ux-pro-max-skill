@@ -4,7 +4,8 @@ on:
   pull_request:
     paths:
       - '.claude/skills/**'
-      - 'cli/assets/skills/**'
+      - 'cli/**'
+      - 'src/ui-ux-pro-max/templates/**'
       - '.github/workflows/tests.yml'
   push:
     branches: [main]
@@ -38,7 +39,11 @@ jobs:
           npm ci
           npx playwright install --with-deps chromium
 
-      - name: Run preview e2e smoke tests
+      - name: Build and check CLI
+        working-directory: cli
+        run: npm run typecheck && npm run build && npm run check:assets
+
+      - name: Run CLI regression and preview tests
         working-directory: cli
         run: npx playwright test
 

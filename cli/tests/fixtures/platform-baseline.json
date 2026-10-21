@@ -1,0 +1,173 @@
+{
+  "claude": {
+    "local": "18a6f7074fffc5c8499fefa75b44c946d93e194b7f5eeb09de88861efde8ef48",
+    "global": "adcc153bf7d82dee25f5cba91397b0a1ad8a518fed0b0f9ca33240a97827fd7a",
+    "folderStructure": {
+      "root": ".claude",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "cursor": {
+    "local": "a0074330888a3272285a12c39e6bc3cff143f870e09c3d5cdad2c5d00976542f",
+    "global": "469b6c4120e59ebdddf2eed065d5dce4458243442b5617fa7be79ae91e09dd8e",
+    "folderStructure": {
+      "root": ".cursor",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "windsurf": {
+    "local": "a0074330888a3272285a12c39e6bc3cff143f870e09c3d5cdad2c5d00976542f",
+    "global": "d4c0864416cbdc13a5fa041e533faf486117f4608256db84dfdcd40857df9dbc",
+    "folderStructure": {
+      "root": ".windsurf",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "antigravity": {
+    "local": "a0074330888a3272285a12c39e6bc3cff143f870e09c3d5cdad2c5d00976542f",
+    "global": "f44313ba68481d8152bdb46f4f71222c4668c57e7e3dd9dc7a5e3eaa6086a6d6",
+    "folderStructure": {
+      "root": ".agents",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "kiro": {
+    "local": "a83ce7bc62cbe7f521580ca12df7756ea2b23645c08b8aa3b382737cdde1f5b0",
+    "global": "7da19be290dcdad3d846e6bff84176a59ce5af5c7f75261ebf90e0afadeebb33",
+    "folderStructure": {
+      "root": ".kiro",
+      "skillPath": "steering/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "opencode": {
+    "local": "0c462a290162f2e75d3882b5cf1e73f96547ac180ec140d37a22bad99ec7bbae",
+    "global": "94e82345874a8e1d9c5db27ff39dbbe3e4c4711ab449a80de369e97f3a5887b1",
+    "folderStructure": {
+      "root": ".opencode",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "roocode": {
+    "local": "a0074330888a3272285a12c39e6bc3cff143f870e09c3d5cdad2c5d00976542f",
+    "global": "ee192896d266192ddbafdfa930f51dd36852e412221764c66d72ab91df7c5bf7",
+    "folderStructure": {
+      "root": ".roo",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "codex": {
+    "local": "0b64203a5ca7fd979bcc0c5bd8b6e9af09a1f43696f9286755ffdf993338d747",
+    "global": "d459d0509f44b1aefaad2e7f758dc9c1a3ea4538adc5b1b519e44150c7e9ee9e",
+    "folderStructure": {
+      "root": ".agents",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "qoder": {
+    "local": "0c462a290162f2e75d3882b5cf1e73f96547ac180ec140d37a22bad99ec7bbae",
+    "global": "e5b8687f4883b33c69e81ccc87ed0b5ff0f50f02dc425c3208a44dbcb6d02296",
+    "folderStructure": {
+      "root": ".qoder",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "gemini": {
+    "local": "0c462a290162f2e75d3882b5cf1e73f96547ac180ec140d37a22bad99ec7bbae",
+    "global": "91c22d6c377b15cf3386503ad09d244491e37f57195bc93e0c59790bb7c5549b",
+    "folderStructure": {
+      "root": ".gemini",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "trae": {
+    "local": "0c462a290162f2e75d3882b5cf1e73f96547ac180ec140d37a22bad99ec7bbae",
+    "global": "650a8ffeaf8954c8be714dc7780d75a43bf877f983ac91a7ef98724971e25c6e",
+    "folderStructure": {
+      "root": ".trae",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "continue": {
+    "local": "0c462a290162f2e75d3882b5cf1e73f96547ac180ec140d37a22bad99ec7bbae",
+    "global": "08da7ee3620de703a0fb404e4d4c234066ea59e22df05c199ed7060f00396121",
+    "folderStructure": {
+      "root": ".continue",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "codebuddy": {
+    "local": "0c462a290162f2e75d3882b5cf1e73f96547ac180ec140d37a22bad99ec7bbae",
+    "global": "55b1984afe5c7fa1789c18db5b776b56b5123c45a889c7b854d4384a862c977b",
+    "folderStructure": {
+      "root": ".codebuddy",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "droid": {
+    "local": "7ecce2b788375b89b9d688fc2bda67587314e097d8f203cf70b9de6740435bd3",
+    "global": "e6d02a7cdba6961b8fe6d0e27a2f2bc16f570098311bbd2a58d4e9a3383b8e2e",
+    "folderStructure": {
+      "root": ".factory",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "kilocode": {
+    "local": "a0074330888a3272285a12c39e6bc3cff143f870e09c3d5cdad2c5d00976542f",
+    "global": "66d2a4fe4600fceb11ba86b856d00b3e9f04828cf47caf86a53f72894039c282",
+    "folderStructure": {
+      "root": ".kilocode",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "warp": {
+    "local": "e57a66ef93c35ce92cde94585147766b8231d8ff1ce9af51c0e4e1fdd3cf528e",
+    "global": "127922d0cd1bcdfe5d305d7edc1738d8c1e3c5e1e4bac79abe7e31bbdf188002",
+    "folderStructure": {
+      "root": ".warp",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "augment": {
+    "local": "e57a66ef93c35ce92cde94585147766b8231d8ff1ce9af51c0e4e1fdd3cf528e",
+    "global": "094c6dd28d78d8d1d3cc1ab849a6a082b5476305b3aa32f2747dda3780495ea8",
+    "folderStructure": {
+      "root": ".augment",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "codewhale": {
+    "local": "0c462a290162f2e75d3882b5cf1e73f96547ac180ec140d37a22bad99ec7bbae",
+    "global": "e08bcf263649f0088ee1a0feedd07ba14b104372164886948f451ee27c1a4acc",
+    "folderStructure": {
+      "root": ".codewhale",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  },
+  "universal": {
+    "local": "a0074330888a3272285a12c39e6bc3cff143f870e09c3d5cdad2c5d00976542f",
+    "global": "f44313ba68481d8152bdb46f4f71222c4668c57e7e3dd9dc7a5e3eaa6086a6d6",
+    "folderStructure": {
+      "root": ".agents",
+      "skillPath": "skills/ui-ux-pro-max",
+      "filename": "SKILL.md"
+    }
+  }
+}

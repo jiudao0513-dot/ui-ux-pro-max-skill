@@ -29,6 +29,7 @@ export interface PlatformConfig {
   installType: InstallType;
   folderStructure: {
     root: string;
+    globalRoot?: string;
     skillPath: string;
     filename: string;
     dataPath?: string;

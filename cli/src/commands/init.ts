@@ -1,4 +1,5 @@
 import { existsSync } from 'node:fs';
+import { homedir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import chalk from 'chalk';
@@ -131,7 +132,7 @@ export async function initCommand(options: InitOptions): Promise<void> {
 
   // Auto-detect or prompt for AI type
   if (!aiType) {
-    const { detected, suggested } = detectAIType();
+    const { detected, suggested } = detectAIType(options.global ? homedir() : process.cwd());
 
     if (detected.length > 0) {
       logger.info(`Detected: ${detected.map(t => chalk.cyan(t)).join(', ')}`);
